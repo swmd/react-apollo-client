@@ -49,7 +49,7 @@ class LoginScreen extends Component {
     loginscreen.push(
       <Login parentContext={this} appContext={this.props.parentContext} />
     );
-    let loginmessage = 'Not registered yet, Register Now';
+    let loginmessage = 'Not registered yet? Register Now';
     this.setState({
       loginscreen: loginscreen,
       loginmessage: loginmessage,
