@@ -3,6 +3,9 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
+import ApolloClient from 'apollo-boost';
+import { REGISTER_MUTATION } from './graphql/mutations';
+import { toastr } from 'react-redux-toastr';
 
 import Login from './Login';
 
@@ -17,19 +20,24 @@ class Register extends Component {
   }
 
   handleClick(event) {
-    console.log(
-      'values',
-      this.state.username,
-      this.state.email,
-      this.state.password
-    );
-    
     const payload = {
-      username: this.state.username,
+      name: this.state.username,
       email: this.state.email,
       password: this.state.password,
     };
+    const client = new ApolloClient({
+      uri: 'http://localhost:4000/graphql',
+    });
     
+    client.mutate({
+      mutation: REGISTER_MUTATION,
+      variables: payload
+    }).then(result => {
+      console.log('register result: ', result.data);
+      toastr.success('Register Success');
+    }).catch(error => {
+      toastr.error('Register Failure');
+    });
   }
 
   render() {
@@ -63,7 +71,7 @@ class Register extends Component {
             />
             <br />
             <RaisedButton
-              label="Submit"
+              label="Register"
               primary={true}
               style={style}
               onClick={event => this.handleClick(event)}

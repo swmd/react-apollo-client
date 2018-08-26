@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import { Route, Switch } from "react-router-dom";
 import ReduxToastr from 'react-redux-toastr';
-
+import 'react-redux-toastr/lib/css/react-redux-toastr.min.css'
 import './App.css';
 import LoginScreen from './LoginScreen';
 

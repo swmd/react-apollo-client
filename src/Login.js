@@ -3,6 +3,9 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
+import ApolloClient from 'apollo-boost';
+import { LOGIN_MUTATION } from './graphql/mutations';
+import { toastr } from 'react-redux-toastr';
 
 class Login extends Component {
   constructor(props) {
@@ -18,7 +21,19 @@ class Login extends Component {
       email: this.state.username,
       password: this.state.password,
     };
+    const client = new ApolloClient({
+      uri: 'http://localhost:4000/graphql',
+    });
     
+    client.mutate({
+      mutation: LOGIN_MUTATION,
+      variables: payload
+    }).then(result => {
+      console.log('login result: ', result.data);
+      toastr.success('Login Success');
+    }).catch(error => {
+      toastr.error('Login Failure');
+    });
   }
 
   render() {
@@ -30,6 +45,7 @@ class Login extends Component {
             <TextField
               hintText="Enter your Username"
               floatingLabelText="Username"
+
               onChange={(event, newValue) =>
                 this.setState({ username: newValue })
               }
@@ -45,7 +61,7 @@ class Login extends Component {
             />
             <br />
             <RaisedButton
-              label="Submit"
+              label="Login"
               primary={true}
               style={style}
               onClick={event => this.handleClick(event)}
